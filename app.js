@@ -24,6 +24,9 @@ db.connect((err) => {
 
 // Endpoint
 app.get("/movies", (req, res) => moviesController.getMovies(req, res, db));
+app.get("/movies/:id", (req, res) =>
+  moviesController.getMovieDetails(req, res, db)
+);
 
 app.listen(port, () => {
   console.log(`Server in ascolto su http://localhost:${port}`);
