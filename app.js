@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+const moviesController = require("./controllers/moviesController");
 
 const app = express();
 const port = 3000;
@@ -15,16 +16,14 @@ const db = mysql.createConnection({
 // Connessione al database
 db.connect((err) => {
   if (err) {
-    console.error("Errore di connessione al database:", err);
+    console.error("Errore di connessione al database", err);
     return;
   }
   console.log("Connessione al database riuscita");
 });
 
 // Endpoint
-app.get("/", (req, res) => {
-  res.send("La connessione al database è attiva");
-});
+app.get("/movies", (req, res) => moviesController.getMovies(req, res, db));
 
 app.listen(port, () => {
   console.log(`Server in ascolto su http://localhost:${port}`);
