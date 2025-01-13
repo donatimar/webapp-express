@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const moviesRouter = require("./routers/movies");
 const notFoundMiddleware = require("./middlewares/notFoundMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
@@ -11,9 +12,12 @@ const port = 3000;
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173", // Assicurati che il tuo frontend React si colleghi a questa porta
   })
 );
+
+// Serve file statici dalla cartella 'public/images'
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 // Router
 app.use("/movies", moviesRouter);
