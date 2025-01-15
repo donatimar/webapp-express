@@ -12,7 +12,7 @@ const port = 3000;
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173", // Assicurati che il tuo frontend React si colleghi a questa porta
+    origin: "http://localhost:5173",
   })
 );
 

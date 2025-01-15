@@ -7,7 +7,7 @@ const getMovies = (req, res, db) => {
       console.error("Errore durante la ricerca dei film", err);
       return res.status(500).send("Errore del server");
     }
-    res.json(results); // Restituisce tutti i film con il campo `image`
+    res.json(results);
   });
 };
 
