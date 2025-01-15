@@ -9,20 +9,15 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const app = express();
 const port = 3000;
 
-// CORS
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
-
-// Serve file statici dalla cartella 'public/images'
+// Middlewares
+app.use(cors({ origin: "http://localhost:5173" }));
+app.use(express.json()); // Parsing del body in formato JSON
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 // Router
 app.use("/movies", moviesRouter);
 
-// Middlewares
+// Gestione degli errori
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 

@@ -1,4 +1,4 @@
-// INDEX
+// INDEX - Ottiene tutti i film
 const getMovies = (req, res, db) => {
   const query = "SELECT * FROM movies";
 
@@ -11,11 +11,10 @@ const getMovies = (req, res, db) => {
   });
 };
 
-// SHOW
+// SHOW - Ottiene i dettagli di un singolo film e le relative recensioni
 const getMovieDetails = (req, res, db) => {
   const movieId = req.params.id;
 
-  // Query - dettagli del film
   const movieQuery = "SELECT * FROM movies WHERE id = ?";
   db.query(movieQuery, [movieId], (err, movieResults) => {
     if (err) {
@@ -29,7 +28,6 @@ const getMovieDetails = (req, res, db) => {
 
     const movie = movieResults[0];
 
-    // Query - recensioni del film
     const reviewsQuery = "SELECT * FROM reviews WHERE movie_id = ?";
     db.query(reviewsQuery, [movieId], (err, reviewsResults) => {
       if (err) {
@@ -45,4 +43,26 @@ const getMovieDetails = (req, res, db) => {
   });
 };
 
-module.exports = { getMovies, getMovieDetails };
+// CREATE - Aggiunge una nuova recensione di un film
+const addReview = (req, res, db) => {
+  const { movie_id, name, vote, text } = req.body;
+
+  if (!movie_id || !name || !vote || !text) {
+    return res
+      .status(400)
+      .send("Tutti i campi di compilazione sono obbligatori");
+  }
+
+  const query =
+    "INSERT INTO reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)";
+  db.query(query, [movie_id, name, vote, text], (err, result) => {
+    if (err) {
+      console.error("Errore durante l'inserimento della recensione", err);
+      return res.status(500).send("Errore del server");
+    }
+
+    res.status(201).send("Recensione aggiunta con successo");
+  });
+};
+
+module.exports = { getMovies, getMovieDetails, addReview };
